@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Remote Controlled Vehicle</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <form onsubmit="return sendCommand('./forward?')">
+      <button class="button">Forward</button>
+    </form>
+    <div class="arrows">
+      <form onsubmit="return sendCommand('./left?')">
+        <button class="button">Left</button>
+      </form>
+      <form onsubmit="return sendCommand('./stop?')">
+        <button class="button">Stop</button>
+      </form>
+      <form onsubmit="return sendCommand('./right?')">
+        <button class="button">Right</button>
+      </form>
+    </div>
+    <form onsubmit="return sendCommand('./backward?')">
+      <button class="button">Back</button>
+    </form>
+  </div>
+  <script>
+    function sendCommand(path) {
+      fetch(path, {
+        method: 'GET',
+      }).then(response => {
+        // Handle the response if needed
+        console.log('Command sent successfully');
+      }).catch(error => {
+        // Handle any errors
+        console.error('Error sending command:', error);
+      });
+      return false; // Prevents the default form submission
+    }
+
+    // Add event listener for arrow key presses
+    document.addEventListener('keydown', (event) => {
+            // Prevent default behavior for arrow keys
+            if (event.key.startsWith('Arrow')) {
+                event.preventDefault();
+            }
+
+            // Check which arrow key is pressed and send corresponding commands
+            switch (event.key) {
+                case 'ArrowUp':
+                    sendCommand('/forward?');
+                    break;
+                case 'ArrowDown':
+                    sendCommand('/backward?');
+                    break;
+                case 'ArrowLeft':
+                    sendCommand('/left?');
+                    break;
+                case 'ArrowRight':
+                    sendCommand('/right?');
+                    break;
+                default:
+                    break;
+            }
+        });
+
+  </script>
+</body>
+</html>
